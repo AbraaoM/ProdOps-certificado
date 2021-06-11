@@ -15,18 +15,22 @@ app.use(express.json())
 
 app.get('/', (req, res) => {
   res.render('template', req.body)
+  
 })
 
-app.post('/certificado', async (req, res) => {
+app.get('/certificado', async (req, res) => {
   const browser = await puppeteer.launch()
   const page = await browser.newPage()
+  const template = Handlebars.compile('template');
   await page.goto('http://localhost:3000/', {
     waitUntil: 'networkidle0'
   })
+
+  // await page.pdf({ path: 'certificado.pdf', format: 'a4' })
   
   const pdf = await page.pdf({
     printBackground: true,
-    format: 'letter',
+    format: 'a4',
     margin:{
       top: "20px",
       bottom: "40px",
@@ -37,9 +41,9 @@ app.post('/certificado', async (req, res) => {
 
   await browser.close()
 
-  response.contentType("application/pdf")  
+  res.contentType("application/pdf")  
 
-  return response.send(pdf)
+  return res.send(pdf)
 
 })
 

@@ -10,7 +10,7 @@ const readFile = utils.promisify(fs.readFile)
 const axios = require('axios')
 
 const app = express()
-const port = 5000
+const port = process.env.PORT || 8000;
 
 app.engine('handlebars', handlebars())
 app.set('view engine', 'handlebars')
